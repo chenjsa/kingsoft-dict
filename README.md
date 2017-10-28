@@ -1,5 +1,10 @@
 # kingsoft-dict
+
 Kingsoft dict extension for the [Ulauncher](https://ulauncher.io/).
+
+## keyword
+
+ks
 
 [Other extensions](https://ext.ulauncher.io/)
 
