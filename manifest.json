@@ -1,0 +1,20 @@
+{
+	"manifest_version": "1",
+	"api_version": "1",
+	"name": "Kingsoft Dict",
+	"description": "Kingsoft Dictionary from En to Cn",
+	"developer_name": "Chenjsa",
+	"icon": "images/icon.png",
+	"options": {
+	  "query_debounce": 0.5
+	},
+	"preferences": [
+	  {
+		"id": "keyword",
+		"type": "keyword",
+		"name": "Kingsoft Dict",
+		"description": "Find in Kingsoft Dict",
+		"default_value": "ks"
+	  }
+	]
+  }
