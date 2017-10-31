@@ -34,10 +34,14 @@ class KeywordQueryEventListener(EventListener):
         if query:
             req = urllib2.Request('http://dict-co.iciba.com/api/dictionary.php?type=json&key=F1D7870B690CBC2442A527DCB771E852&w=' + query)
             response = urllib2.urlopen(req)
-            the_page = response.read()
-            obj = json.loads(the_page)
-            parts = obj["symbols"][0]["parts"]
-            print parts
+            rsp_data = response.read()
+            obj = json.loads(rsp_data)
+
+            parts = []
+            if "parts" in obj["symbols"][0].keys():
+                parts = obj["symbols"][0]["parts"]
+                print parts
+
             items = []
             for part in parts:
                 means = ''
