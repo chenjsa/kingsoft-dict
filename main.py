@@ -1,3 +1,5 @@
+# -*- coding:utf-8 -*-
+
 import urllib2
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
@@ -6,8 +8,8 @@ from ulauncher.api.shared.action.RenderResultListAction import RenderResultListA
 from ulauncher.api.shared.action.HideWindowAction import HideWindowAction
 from ulauncher.api.shared.action.DoNothingAction import DoNothingAction
 from ulauncher.api.shared.event import KeywordQueryEvent
-import sys
 import json
+import sys
 
 reload(sys)
 sys.setdefaultencoding("utf-8")
@@ -48,11 +50,16 @@ class KeywordQueryEventListener(EventListener):
                 desc = ''
                 if isinstance(part["means"][0], basestring):
                     means = '; '.join(part["means"])
-                    desc = part["part"] + u"\20" + means
+                    desc = part["part"] + ' ' + means
                 else:
                     for word in part["means"]:
                         means = means + word["word_mean"] + '; '
                     desc = means
+
+                # 替换'<'、'>'字符，否则字符串无法正常显示
+                desc = desc.replace('<', '[')
+                desc = desc.replace('>', ']')
+
                 items.append(ExtensionResultItem(icon='images/icon.png', name=desc, on_enter=HideWindowAction()))
 
             if items:
