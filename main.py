@@ -1,6 +1,7 @@
 # -*- coding:utf-8 -*-
 
-import urllib2
+from __future__ import print_function
+
 from ulauncher.api.client.Extension import Extension
 from ulauncher.api.client.EventListener import EventListener
 from ulauncher.api.shared.item.ExtensionResultItem import ExtensionResultItem
@@ -11,8 +12,14 @@ from ulauncher.api.shared.event import KeywordQueryEvent
 import json
 import sys
 
-reload(sys)
-sys.setdefaultencoding("utf-8")
+print(sys.version_info)
+
+try:
+    from urllib2 import Request, urlopen
+    reload(sys)
+    sys.setdefaultencoding("utf-8")
+except ModuleNotFoundError:
+    from urllib.request import Request, urlopen
 
 
 class KingsoftDictExtension(Extension):
@@ -33,22 +40,25 @@ class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
         query = event.get_argument()
+        print(query)
         if query:
-            req = urllib2.Request('http://dict-co.iciba.com/api/dictionary.php?type=json&key=F1D7870B690CBC2442A527DCB771E852&w=' + query)
-            response = urllib2.urlopen(req)
+            req = Request('http://dict-co.iciba.com/api/dictionary.php?type=json&key=F1D7870B690CBC2442A527DCB771E852&w=' + query)
+            response = urlopen(req)
             rsp_data = response.read()
             obj = json.loads(rsp_data)
+
+            print(obj)
 
             parts = []
             if "parts" in obj["symbols"][0].keys():
                 parts = obj["symbols"][0]["parts"]
-                print parts
+                print(parts)
 
             items = []
             for part in parts:
                 means = ''
                 desc = ''
-                if isinstance(part["means"][0], basestring):
+                if isinstance(part["means"][0], str):
                     means = '; '.join(part["means"])
                     desc = part["part"] + ' ' + means
                 else:
