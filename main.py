@@ -12,7 +12,6 @@ from ulauncher.api.shared.event import KeywordQueryEvent
 import json
 import sys
 
-print(sys.version_info)
 
 try:
     from urllib2 import Request, urlopen
@@ -20,7 +19,7 @@ try:
     sys.setdefaultencoding("utf-8")
 except ModuleNotFoundError:
     from urllib.request import Request, urlopen
-
+    from urllib.parse import quote
 
 class KingsoftDictExtension(Extension):
 
@@ -40,14 +39,11 @@ class KeywordQueryEventListener(EventListener):
 
     def on_event(self, event, extension):
         query = event.get_argument()
-        print(query)
         if query:
-            req = Request('http://dict-co.iciba.com/api/dictionary.php?type=json&key=F1D7870B690CBC2442A527DCB771E852&w=' + query)
+            req = Request('http://dict-co.iciba.com/api/dictionary.php?type=json&key=F1D7870B690CBC2442A527DCB771E852&w={}'.format(quote(query)))
             response = urlopen(req)
             rsp_data = response.read()
             obj = json.loads(rsp_data)
-
-            print(obj)
 
             parts = []
             if "parts" in obj["symbols"][0].keys():
